@@ -1,35 +1,12 @@
 'use client';
 
-import Button from '@/components/common/button';
-import UserCreateFormModal from '@/components/user/user-create-form-modal';
-import { MODAL } from '@/constants/modal-key-constants';
-import useModals from '@/hooks/use-modals';
-import { useUsers } from '@/lib/user';
 import { sva } from '@/styled-system/css';
 import { Box } from '@/styled-system/jsx';
 
 const Page = () => {
   const pageStyle = PageSva();
-  const { openModal } = useModals();
 
-  const { data: users } = useUsers({
-    _page: 1,
-    _per_page: 10,
-  });
-
-  const handleClickCreateButton = () => {
-    openModal({
-      id: MODAL.USER_CREATE,
-      component: <UserCreateFormModal />,
-    });
-  };
-
-  return (
-    <Box className={pageStyle.wrapper}>
-      <Box className={pageStyle.list}>{users?.data.map((user) => <Box key={user.id}>{user.name}</Box>)}</Box>
-      <Button onClick={handleClickCreateButton}>Create</Button>
-    </Box>
-  );
+  return <Box className={pageStyle.wrapper}></Box>;
 };
 
 export default Page;

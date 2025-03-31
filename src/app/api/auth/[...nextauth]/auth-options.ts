@@ -1,4 +1,4 @@
-import { tokenRefresh } from '@/lib/common/account';
+import { tokenRefresh } from '@/lib/account';
 import dayjs from 'dayjs';
 import { jwtDecode } from 'jwt-decode';
 import { NextAuthOptions, User } from 'next-auth';
