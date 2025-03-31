@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { getSession, signOut } from 'next-auth/react';
-import { redirect } from 'next/navigation';
+import { getSession } from 'next-auth/react';
 
 type Body = Record<string, unknown> | Record<string, unknown>[];
 
@@ -14,6 +13,7 @@ interface IFetchApiArgs {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const _fetchApi = async <T = object>({ method, url, body, customHeaders = {} }: IFetchApiArgs): Promise<T> => {
   const session = await getSession();
+  const accessToken = session?.user?.accessToken;
   const response = await axios({
     method,
     url: url,
@@ -21,7 +21,7 @@ const _fetchApi = async <T = object>({ method, url, body, customHeaders = {} }: 
     params: method === 'GET' ? body : undefined,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${session?.user?.accessToken}`,
+      Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
       ...customHeaders,
     },
     withCredentials: true,
