@@ -10,11 +10,9 @@ interface ICoreProviderProps {
 const CoreProvider = ({ children }: ICoreProviderProps) => {
   return (
     <SessionProvider>
-      <AuthProvider>
-        <QueryProvider>
-          <ModalProvider>{children}</ModalProvider>
-        </QueryProvider>
-      </AuthProvider>
+      <QueryProvider>
+        <ModalProvider>{children}</ModalProvider>
+      </QueryProvider>
     </SessionProvider>
   );
 };

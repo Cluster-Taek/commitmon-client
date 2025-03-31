@@ -44,10 +44,6 @@ const credentialsProviderOption: CredentialsConfig = {
   },
 };
 export const authOptions: NextAuthOptions = {
-  pages: {
-    signIn: '/login',
-    error: '/login',
-  },
   providers: [CredentialsProvider(credentialsProviderOption)],
   callbacks: {
     async jwt({ token, user, account, trigger, session }) {
