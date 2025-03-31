@@ -1,33 +1,38 @@
 import { fetchApi } from './base';
-import { IPageable } from '@/types/pageable';
-import { IUser } from '@/types/user';
+import { IUser, IUserWithFollowers } from '@/types/user';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-export interface IUsersParams {
-  // paging params of json-server
-  _page: number;
-  _per_page: number;
+export interface IChangeCommitmonFormValue extends Record<string, unknown> {
+  commitmon: string;
 }
 
-export interface IUserCreateFormValue extends Record<string, unknown> {
-  name: string;
-}
+export const useUser = () => {
+  return useQuery<IUser>({
+    queryKey: [`/api/me`],
+  });
+};
 
-export const useUsers = (params: IUsersParams) => {
-  return useQuery<IPageable<IUser>>({
-    queryKey: [`/api/users`, params],
+export const useUserWithFollowers = () => {
+  return useQuery<IUserWithFollowers>({
+    queryKey: [`/api/me/detail`],
   });
 };
 
 export const useCreateUserMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: IUserCreateFormValue) => await fetchApi.post(`/api/users`, data),
+    mutationFn: async (data: IChangeCommitmonFormValue) => await fetchApi.post(`/api/me/commmitmon/change`, data),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ['/api/users'],
-        refetchType: 'all',
-      });
+      await Promise.all([
+        await queryClient.invalidateQueries({
+          queryKey: ['/api/me'],
+          refetchType: 'all',
+        }),
+        await queryClient.invalidateQueries({
+          queryKey: ['/api/me/detail'],
+          refetchType: 'all',
+        }),
+      ]);
     },
   });
 };
