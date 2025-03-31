@@ -26,9 +26,6 @@ const _fetchApi = async <T = object>({ method, url, body, customHeaders = {} }: 
     },
     withCredentials: true,
   }).catch(async (error) => {
-    if (response.status === 401) {
-      await signOut();
-    }
     throw error;
   });
 
